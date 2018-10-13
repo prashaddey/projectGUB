@@ -103,7 +103,7 @@ export default class List extends Component{
         );
     }
 
-
+    // rendered
     render(){
         return (
             <View style={styles.itemContainer}>
