@@ -1,0 +1,24 @@
+{
+  "name": "projectGUB",
+  "displayName": "projectGUB",
+  "expo": {
+    "name": "projectGUB",
+    "icon": "./assets/logo/icon.png",
+    "version": "2.0.1",
+    "slug": "projectGUB",
+    "sdkVersion": "28.0.0",
+    "ios": {
+      "bundleIdentifier": "com.prashaddey.projectGUB"
+    },
+    "android": {
+      "package": "com.prashaddey.projectGUB"
+    },
+    "loading": {
+      "icon": "./assets/logo/icon.png",
+      "hideExponentText": false
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf", "mp4"]
+    }    
+   }
+}
