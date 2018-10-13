@@ -37,7 +37,6 @@ export default class List extends Component{
     _fetchUsers(){
         // fetch('http://stella.soladuro.com/photography/wp-json/wp/v2/users')
         // fetch('http://jsonplaceholder.typicode.com/users')
-        // fetch('http://prashaddey.xyz/gub1/wp-json/wp/v2/posts')
         fetch('http://gub.prashaddey.xyz/wp-json/wp/v2/posts/')
         .then((response) => response.json())
         .then((response) => {
