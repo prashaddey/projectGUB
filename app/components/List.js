@@ -11,7 +11,6 @@ import {
     Button,
     ParallaxScrollView,
     Image,
-    FlatList,
     RefreshControl
     } from "react-native";
 
