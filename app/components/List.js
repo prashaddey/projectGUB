@@ -11,7 +11,8 @@ import {
     Button,
     ParallaxScrollView,
     Image,
-    FlatList
+    FlatList,
+    RefreshControl
     } from "react-native";
 
 
@@ -26,23 +27,51 @@ export default class List extends Component{
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             usersDS: ds,
+            refreshing: false
         };
     }
     //Hook the _fetchUsers() function to a LifeCycle method
+    fetchData = async() =>{
+        // const response =  await fetch('http://gub.prashaddey.xyz/wp-json/wp/v2/posts/');
+        // const products = await response.json(); // products have array data
+        // this.setState({usersDS: products}); // filled data with dynamic array
+        fetch('http://gub.prashaddey.xyz/wp-json/wp/v2/posts/', {
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+            }).then((response) => response.json())
+            .then((response) => {
+                this.setState({
+                usersDS: this.state.usersDS.cloneWithRows(response),
+                });
+
+                console.log(JSON.stringify(response));
+            });
+    };
     componentDidMount(){
-        this._fetchUsers();
+        this.fetchData();
     }
 
-    //_fethcUsers()
-    _fetchUsers(){
-        // fetch('http://stella.soladuro.com/photography/wp-json/wp/v2/users')
-        // fetch('http://jsonplaceholder.typicode.com/users')
-        fetch('http://gub.prashaddey.xyz/wp-json/wp/v2/posts/')
-        .then((response) => response.json())
-        .then((response) => {
-            this.setState({
-            usersDS: this.state.usersDS.cloneWithRows(response),
-            });
+    // _fetchUsers(){
+    //     // fetch('http://stella.soladuro.com/photography/wp-json/wp/v2/users')
+    //     // fetch('http://jsonplaceholder.typicode.com/users')
+    //     // fetch('http://www.prashad.is-great.org/wp-json/wp/v2/posts')
+    //     // fetch('https://prashaddey1.000webhostapp.com/wp-json/wp/v2/posts')
+    //     // fetch('http://prashaddey.xyz/gub1/wp-json/wp/v2/posts')
+    //     fetch('http://gub.prashaddey.xyz/wp-json/wp/v2/posts/')
+    //     .then((response) => response.json())
+    //     .then((response) => {
+    //         this.setState({
+    //         usersDS: this.state.usersDS.cloneWithRows(response),
+    //         });
+    //
+    //         console.log('Checking Json file : '+JSON.stringify(response));
+    //     });
+    // }
+    _onRefresh(){
+        this.setState({refreshing:true});
+        this.fetchData().then(()=>{
+            this.setState({refreshing:false})
         });
     }
 
@@ -59,7 +88,7 @@ export default class List extends Component{
         //Post Author
         let author = user._links.author.href;
 
-        console.log(file_link)
+        console.log(file_link);
         //IsFileLinkExists function - callback
 
         IsFileLinkExists = () => {
@@ -103,18 +132,22 @@ export default class List extends Component{
         );
     }
 
-    // rendered test
+
     render(){
         return (
             <View style={styles.itemContainer}>
-                <ScrollView
-                    >
+
                     <ListView
                         dataSource={this.state.usersDS}
                         renderRow={this._renderSingleUser.bind(this)}
                         initialListSize={2}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing ={this.state.refreshing}
+                                onRefresh={this._onRefresh.bind(this)}
+                            />}
                         />
-                </ScrollView>
+
             </View>
         );
     }
